@@ -1,6 +1,6 @@
 const { recipe } = require("../models/Recipe");
 
-const recetaId = (req, res) => {
+const recipeId = (req, res) => {
   const {
     id,
     nombre,
@@ -8,10 +8,9 @@ const recetaId = (req, res) => {
     resumen_del_plato,
     nivel_de_comida_saludable,
     paso_a_paso,
-  } = req.params;
-  
+  } = req.body;
 };
 
 module.exports = {
-  recetaId,
+  recipeId,
 };
