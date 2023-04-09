@@ -6,15 +6,31 @@ module.exports = (sequelize) => {
   sequelize.define(
     "diets",
     {
-      nombre: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        type: DataTypes.UUID,
         primaryKey: true,
-      }
+        defaultValue: DataTypes.UUIDV4,
+      },
+      nombre: {
+        type: DataTypes.ENUM(
+          "Gluten Free",
+          "Ketogenic",
+          "Vegetarian",
+          "Lacto-Vegetarian",
+          "Ovo-Vegetarian",
+          "Vegan",
+          "Pescetarian",
+          "Paleo",
+          "Primal",
+          "Low FODMAP",
+          "Whole30"
+        ),
+        allowNull: false,
+        validate: {
+          isLowercase: true,
+          isUppercase: true,
+        }
+      },
     },
     { timestamps: false }
   );

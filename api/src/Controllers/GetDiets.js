@@ -1,1 +1,0 @@
-const {diets} = require("../models/Diets")
