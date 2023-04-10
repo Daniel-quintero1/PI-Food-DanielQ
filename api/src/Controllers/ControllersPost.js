@@ -1,5 +1,5 @@
-// const { recipe } = require("../db");
-// const { v4: uuidv4 } = require("uuid");
+const { recipe } = require("../db");
+const { v4: uuidv4 } = require("uuid");
 
 // const createPost = async (
 //   nombre,
@@ -9,7 +9,7 @@
 //   paso_a_paso,
 //   dietId
 // ) => {
-//   const id = uuidv4();
+  const id = uuidv4();
 //   const newPost = await recipe.create({
 //     id,
 //     nombre,
@@ -25,3 +25,19 @@
 // module.exports = {
 //   createPost,
 // };
+const createRecipe = async (obj) => {
+  let newrecipe = await recipe.create({
+    id,
+    name: obj.title,
+    image: obj.image,
+    sumary: obj.sumary,
+    healthScore: obj.healthScore,
+    analyzedInstructions: obj.analyzedInstructions,
+  });
+  await newrecipe.addDiet(dietId);
+  return newrecipe;
+};
+
+module.exports = {
+  createRecipe,
+};

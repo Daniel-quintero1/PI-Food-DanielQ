@@ -2,10 +2,10 @@ const { recipe } = require("../models/Recipe");
 const { getAllRecipe, SearchRecipeByName } = require("../Controllers/ControllersGet");
 
 const recipeName = async (req, res) => {
-  const { nombre } = req.query;
+  const { title } = req.query;
   console.log(req.query);
-  const result = nombre
-    ? await SearchRecipeByName(nombre)
+  const result = title
+    ? await SearchRecipeByName(title)
     : await getAllRecipe();
   try {
     res.status(200).json(result);

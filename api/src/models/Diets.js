@@ -10,21 +10,22 @@ module.exports = (sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
+        allowNull: false
       },
-      nombre: {
-        type: DataTypes.ENUM(
-          "Gluten Free",
-          "Ketogenic",
-          "Vegetarian",
-          "Lacto-Vegetarian",
-          "Ovo-Vegetarian",
-          "Vegan",
-          "Pescetarian",
-          "Paleo",
-          "Primal",
-          "Low FODMAP",
-          "Whole30"
-        ),
+      name: {
+        type: DataTypes.STRING,
+          // "Gluten Free",
+          // "Ketogenic",
+          // "Vegetarian",
+          // "Lacto-Vegetarian",
+          // "Ovo-Vegetarian",
+          // "Vegan",
+          // "Pescetarian",
+          // "Paleo",
+          // "Primal",
+          // "Low FODMAP",
+          // "Whole30"
+        
         allowNull: false,
         validate: {
           isLowercase: true,

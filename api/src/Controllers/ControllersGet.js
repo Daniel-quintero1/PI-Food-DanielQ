@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const { recipe } = require("../db");
+const { diets } = require("../db");
 const axios = require("axios");
 const { API_KEY } = process.env;
 
@@ -30,9 +31,10 @@ const getRecipeById = async (idRecipe, source) => {
           )
         ).data // el axios me viene en data por eso
       : await recipe.findByPk(idRecipe, {
-          include: { //esto es para ver en el detalle de la id que busq mas informacion del id. 
+          include: {
+            //esto es para ver en el detalle de la id que busq mas informacion del id.
             model: recipe, // abro un obj de configuracion, inclu, el modelo recipe
-            attributes: ["nombre", "image"],
+            attributes: ["name", "image"],
           },
         });
   return receta;
@@ -55,21 +57,35 @@ const getAllRecipe = async () => {
 //debo Preguntar que solo me traiga 1 sola cosa cuando le pido de bdd o api
 const SearchRecipeByName = async (name) => {
   const BddRecipe = await recipe.findAll({
-    where: !!name
-      ? {
-          name: { [Op.eq]: name.toLowerCase() },
-        }
-      : {},
+    where: {
+      title: {
+        [Op.iLike]: `%${name}%`,
+      },
+    },
+    include: [
+      {
+        model: diets,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
   });
   const apiRecipeRaw = (
     await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&query=${name}&apiKey=${API_KEY}&number=5`
+      `https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&query=${title}&apiKey=${API_KEY}&number=5`
     )
   ).data;
   const apiRecipe = cleanArray(apiRecipeRaw);
   const apiFilter = apiRecipe.filter((r) =>
-    r.name.toLowerCase().includes(name.toString().toLowerCase())
+    r.title.toLowerCase().includes(title.toString().toLowerCase())
   );
+  apiFilter.length ?
+            res.status(200).send(apiFilter)
+            :
+            res.status(404).send("Recipe not found")
+
   return [...BddRecipe, ...apiFilter];
 };
 
