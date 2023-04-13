@@ -4,7 +4,7 @@
   module.exports = (sequelize) => {
     // defino el modelo
     sequelize.define(
-      "recipe",
+      "Recipe",
       {
         id: {
           type: DataTypes.UUID,

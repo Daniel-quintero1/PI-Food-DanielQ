@@ -1,4 +1,4 @@
-const { recipe } = require("../db");
+const { Recipe } = require("../db");
 const { v4: uuidv4 } = require("uuid");
 
 // const createPost = async (
@@ -26,7 +26,7 @@ const { v4: uuidv4 } = require("uuid");
 //   createPost,
 // };
 const createRecipe = async (obj) => {
-  let newrecipe = await recipe.create({
+  let newrecipe = await Recipe.create({
     id,
     name: obj.title,
     image: obj.image,

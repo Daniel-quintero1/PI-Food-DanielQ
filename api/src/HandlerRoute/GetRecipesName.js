@@ -1,5 +1,5 @@
-const { recipe } = require("../models/Recipe");
-const { getAllRecipe, SearchRecipeByName } = require("../Controllers/ControllersGet");
+const { Recipe } = require("../models/Recipe");
+const { getAllRecipe, SearchRecipeByName} = require("../Controllers/ControllersGet");
 
 const recipeName = async (req, res) => {
   const { title } = req.query;
@@ -12,6 +12,7 @@ const recipeName = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+
 };
 
 module.exports = {

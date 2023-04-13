@@ -42,18 +42,22 @@ DietsModel(sequelize);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { recipe, diets } = sequelize.models;
+const { Recipe, Diets } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);  RELACION DE UNO A MUCHOS
-recipe.belongsToMany(diets, { through: 'recipe_diet' });
-diets.belongsToMany(recipe, { through: 'recipe_diet' });
+Recipe.belongsToMany(Diets, { through: 'Recipe_Diet' });
+Diets.belongsToMany(Recipe, { through: 'Recipe_Diet' });
+//food=# INSERT INTO "Recipe_Diet" ("createdAt", "updatedAt", "RecipeId", "DietId") 
+//VALUES (NOW(), NOW(), '98fe3a92-e315-4f3a-84d7-c336f980a570', '95a8f94a-4f5c-4f87-9ee1-77e87582facc');
+//                                         ||                                    ||   
+//                       modelo         id-Recipes                   model     id-Diets   
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,
-  recipe,
-  diets, // para importart la conexión { conn } = require('./db.js');
+  Recipe,
+  Diets, // para importart la conexión { conn } = require('./db.js');
 };
 /**
  * En este ejemplo, hemos agregado una columna dietId en la tabla recipes

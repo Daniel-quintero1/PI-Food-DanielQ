@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
-const { recipe } = require("../db");
-const { diets } = require("../db");
+const { Recipe } = require("../db");
+const { Diets } = require("../db");
 const axios = require("axios");
 const { API_KEY } = process.env;
 
@@ -10,53 +10,47 @@ const cleanArray = (arr) =>
       id: x.id,
       name: x.title,
       image: x.image,
-      // summary: x.summary,
-      // steps: x.analyzedInstructions[0]?.steps.map((s) => {
-      //   return {
-      //     number: s.number,
-      //     step: s.step,
-      //   };
-      // }),
-      // diets: x.diets,
-      // created: false,
+      summary: x.summary,
+      steps: x.analyzedInstructions[0]?.steps.map((s) => {
+        return {
+          number: s.number,
+          step: s.step,
+        };
+      }),
+      diets: x.diets,
+      created: false,
     };
   });
 
 const getRecipeById = async (idRecipe, source) => {
   const receta =
     source === "api"
-      ? (
+    ? (
           await axios.get(
-            `https://api.spoonacular.com/recipes/${idRecipe}/information?includeNutrition=true&apiKey=${API_KEY}`
+            `https://api.spoonacular.com/recipes/${idRecipe}/information?apiKey=${API_KEY}`
           )
         ).data // el axios me viene en data por eso
-      : await recipe.findByPk(idRecipe, {
-          include: {
-            //esto es para ver en el detalle de la id que busq mas informacion del id.
-            model: recipe, // abro un obj de configuracion, inclu, el modelo recipe
-            attributes: ["name", "image"],
-          },
-        });
+      : await Recipe.findByPk(idRecipe);
   return receta;
 };
 
 const getAllRecipe = async () => {
   //buscar en bdd
-  const getBddRecipe = await recipe.findAll();
-
+  const getBddRecipe = await Recipe.findAll();
+  
   //buscar en api
   const getApiRecipe = (
     await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=5`
+      `https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&number=5&apiKey=${API_KEY}`
     )
-  ).data.results;
+    ).data.results;
   const apiRecipe = cleanArray(getApiRecipe);
   //unifica amabas
   return [...getBddRecipe, ...apiRecipe];
 };
 //debo Preguntar que solo me traiga 1 sola cosa cuando le pido de bdd o api
 const SearchRecipeByName = async (name) => {
-  const BddRecipe = await recipe.findAll({
+  const BddRecipe = await Recipe.findAll({
     where: {
       title: {
         [Op.iLike]: `%${name}%`,
@@ -64,7 +58,7 @@ const SearchRecipeByName = async (name) => {
     },
     include: [
       {
-        model: diets,
+        model: Diets,
         attributes: ["name"],
         through: {
           attributes: [],
@@ -74,12 +68,12 @@ const SearchRecipeByName = async (name) => {
   });
   const apiRecipeRaw = (
     await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&query=${title}&apiKey=${API_KEY}&number=5`
+      `https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&query=${name}&number=5&apiKey=${API_KEY}`
     )
   ).data;
   const apiRecipe = cleanArray(apiRecipeRaw);
   const apiFilter = apiRecipe.filter((r) =>
-    r.title.toLowerCase().includes(title.toString().toLowerCase())
+    r.name.toLowerCase().includes(name.toString().toLowerCase())
   );
   apiFilter.length ?
             res.status(200).send(apiFilter)
@@ -88,6 +82,7 @@ const SearchRecipeByName = async (name) => {
 
   return [...BddRecipe, ...apiFilter];
 };
+
 
 module.exports = {
   getRecipeById,

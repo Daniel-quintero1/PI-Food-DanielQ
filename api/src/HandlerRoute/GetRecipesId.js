@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { recipe } = require("../db");
+const { Recipe } = require("../db");
 const { v4: uuidv4 } = require("uuid");
 const {getRecipeById} = require("../Controllers/ControllersGet")
 

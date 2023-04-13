@@ -1,5 +1,5 @@
-const {recipe} = require("../db")
-const { diets }= require("../db")
+const {Recipe} = require("../db")
+const { Diets }= require("../db")
 
 const { v4: uuidv4 } = require("uuid");
 
@@ -16,7 +16,7 @@ const recipeId = async (req, res) => {
 
     if (!name) throw Error("Faltan datos importantes");
     const id = uuidv4();
-    const newRecipe = await recipe.create({
+    const newRecipe = await Recipe.create({
        id,
        name,
        image,
@@ -24,7 +24,7 @@ const recipeId = async (req, res) => {
        healthScore,
        analyzedInstructions,
     });
-   const dietBdd = await diets.findAll({
+   const dietBdd = await Diets.findAll({
     where: { name : dietId}
    })
    

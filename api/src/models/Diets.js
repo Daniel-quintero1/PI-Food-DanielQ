@@ -4,7 +4,7 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define(
-    "diets",
+    "Diets",
     {
       id: {
         type: DataTypes.UUID,
@@ -13,19 +13,7 @@ module.exports = (sequelize) => {
         allowNull: false
       },
       name: {
-        type: DataTypes.STRING,
-          // "Gluten Free",
-          // "Ketogenic",
-          // "Vegetarian",
-          // "Lacto-Vegetarian",
-          // "Ovo-Vegetarian",
-          // "Vegan",
-          // "Pescetarian",
-          // "Paleo",
-          // "Primal",
-          // "Low FODMAP",
-          // "Whole30"
-        
+        type: DataTypes.STRING,        
         allowNull: false,
         validate: {
           isLowercase: true,
