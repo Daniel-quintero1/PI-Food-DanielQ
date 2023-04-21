@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom";
-
-const Page = (recipe) => {
+import style from "./Page.module.css"
+// es mi NAVBAR () para poder navegar dentro de mi app
+const Page = () => {
   return (
-    <div>
+    <div className={style.mainContainer}>
       <Link to="/home">
         <p>HOME</p>
       </Link>
-      <Link to="/landing">
-        <p>LANDING</p>
+      <Link to="/form">
+        <p>FORM </p>
       </Link>
-      <Link to="/formPage">
-        <p>FORM PAGE</p>
-      </Link>
+    
     </div>
   );
 };

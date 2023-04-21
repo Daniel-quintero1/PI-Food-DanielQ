@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "eslint": "^8.38.0",
     "redux-devtools-extension": "^2.13.9"
   }
 }

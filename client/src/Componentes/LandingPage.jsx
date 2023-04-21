@@ -1,4 +1,4 @@
-
+// debo definir un boton START para entrar a la app del home. 
 const Landing = () => {
   return (
     <div>

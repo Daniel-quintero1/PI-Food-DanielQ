@@ -5,6 +5,8 @@ import thunk from "redux-thunk";
 export const GET_RECIPE = "GET_RECIPE";
 export const GET_DETAILRECIPE = "GET_DETAILRECIPE";
 export const GET_ADDRECIPE = "GET_DETAILRECIPE";
+export const GET_DIET = "GET_DETAILRECIPE";
+
 
 //Store=>se utiliza para crear y configurar el
 // store de Redux.
